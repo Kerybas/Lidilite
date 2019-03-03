@@ -19,8 +19,11 @@ class Table:
             except KeyError:
                 val = None
 
-            if not (isinstance(val, str) or isinstance(val, int)
-                    or isinstance(val, float) or isinstance(val, bool)):
+            if not (isinstance(val, str)
+                    or isinstance(val, int)
+                    or isinstance(val, float)
+                    or isinstance(val, bool)
+                    or val is None):
                 val = str(val)
 
             sql_dict[col] = val
