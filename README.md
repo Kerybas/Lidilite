@@ -26,6 +26,15 @@ table = lidilite.Table(cnx, 'TABLE_1')
 
 table.insert(data)
 ```
+```sql
+SELECT * FROM TABLE_1
+
+id      color	count	size	content
+A00001	blue	3	    1.6	    ['stuff1', 'stuff2']
+A00002	red	    6	    2.0	    []
+A00003		    3	    1.6	
+A00004	green	0	    7.4	    ['stuff1', 'stuff2', 'stuff4']
+```
 Lidilite also provides a tool to print out a CREATE query that would match
 the given list of dictionaries.  
 
