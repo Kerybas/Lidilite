@@ -23,6 +23,9 @@ def find_keys(data):
             if row_key not in all_keys:
                 all_keys.append(row_key)
                 uncommon_keys.append(row_key)
+        for all_key in all_keys:
+            if all_key not in row_keys:
+                uncommon_keys.append(all_key)
 
     common_keys = [key for key in all_keys if key not in uncommon_keys]
 
