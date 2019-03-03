@@ -18,6 +18,11 @@ class Table:
                 val = data_row[col]
             except KeyError:
                 val = None
+
+            if not (isinstance(val, str) or isinstance(val, int)
+                    or isinstance(val, float) or isinstance(val, bool)):
+                val = str(val)
+
             sql_dict[col] = val
         return sql_dict
 
@@ -32,6 +37,9 @@ class Table:
             sql_query = '{} INTO {}({}) VALUES({})'.format(mode, self.table, sql_columns, sql_holders)
         else:
             raise ValueError('{} is not a valid mode.'.format(mode))
+
+        self._sql_query = sql_query
+        self._sql_values = sql_values
 
         return sql_query, sql_values
 
