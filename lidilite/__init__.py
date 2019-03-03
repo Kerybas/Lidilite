@@ -1,1 +1,1 @@
-from lidilite.write_to_table import Table
+from lidilite.main import Table
