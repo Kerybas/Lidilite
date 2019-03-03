@@ -1,6 +1,6 @@
-def draft_create(data, table_name='NEW_TABLE', mode='all_keys'):
+def draft_create_query(data, table_name='NEW_TABLE', mode='all'):
     all_keys, common_keys, uncommon_keys = find_keys(data)
-    if mode == 'common_keys':
+    if mode == 'common':
         selected_keys = common_keys
     else:
         selected_keys = all_keys

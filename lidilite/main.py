@@ -8,33 +8,36 @@ class Table:
         columns = []
         with self.cnx as cnx:
             for col_info in cnx.execute("pragma table_info('{}');".format(self.table)):
-                columns.append(col_info[1])
+                columns.append((col_info[1], col_info[2]))
         return columns
 
     def _datarow_to_sqldict(self, data_row):
         sql_dict = {}
-        for col in self.columns:
+        for column_name, column_type in self.columns:
             try:
-                val = data_row[col]
+                val = data_row[column_name]
             except KeyError:
                 val = None
 
-            if not (isinstance(val, str)
-                    or isinstance(val, int)
-                    or isinstance(val, float)
-                    or isinstance(val, bool)
-                    or val is None):
-                val = str(val)
+            if val != None:
+                if column_type == 'INTEGER':
+                    val = int(val)
+                elif column_type == 'REAL':
+                    val = float(val)
+                elif column_type == 'TEXT':
+                    val = str(val)
+                else:
+                    val = str(val)
 
-            sql_dict[col] = val
+            sql_dict[column_name] = val
         return sql_dict
 
     def _prep_query(self, data_row, mode):
-
+        columns_names = [column[0] for column in self.columns]
         sql_dict = self._datarow_to_sqldict(data_row)
         sql_holders = ','.join('?' * len(sql_dict))
-        sql_columns = ','.join(self.columns)
-        sql_values = [sql_dict[col] for col in self.columns]
+        sql_columns = ','.join(columns_names)
+        sql_values = [sql_dict[col] for col in columns_names]
 
         if mode in ('INSERT', 'INSERT OR REPLACE', 'REPLACE'):
             sql_query = '{} INTO {}({}) VALUES({})'.format(mode, self.table, sql_columns, sql_holders)
