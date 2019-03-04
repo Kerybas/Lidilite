@@ -1,23 +1,23 @@
-def draft_create_table(data, table_name='NEW_TABLE', mode='all', primary_keys=None):
-    all_keys, common_keys, uncommon_keys = find_keys(data)
+def draft_create_table(data_list_dicts, table_name='NEW_TABLE', mode='all', primary_keys=None):
+    all_keys, common_keys, uncommon_keys = find_keys(data_list_dicts)
     if mode == 'common':
         selected_keys = common_keys
     else:
         selected_keys = all_keys
 
-    keys_types = give_keys_types(data, selected_keys)
+    keys_types = give_keys_types(data_list_dicts, selected_keys)
     keys_sql_types = convert_to_sql_types(keys_types)
     query = prepare_query(table_name, keys_sql_types, primary_keys)
 
     return query
 
 
-def find_keys(data):
+def find_keys(data_list_dicts):
     uncommon_keys = []
 
-    all_keys = list(data[0].keys())
+    all_keys = list(data_list_dicts[0].keys())
 
-    for data_row in data:
+    for data_row in data_list_dicts:
         row_keys = data_row.keys()
         for row_key in row_keys:
             if row_key not in all_keys:
@@ -47,13 +47,13 @@ def give_val_type(val):
     return vtype
 
 
-def give_keys_types(data, selected_keys):
+def give_keys_types(data_list_dicts, selected_keys):
     keys_types = {}
     for key in selected_keys:
         types = set()
-        for data_row in data:
+        for data_dict in data_list_dicts:
             try:
-                vtype = give_val_type(data_row[key])
+                vtype = give_val_type(data_dict[key])
                 types.add(vtype)
             except KeyError:
                 pass
