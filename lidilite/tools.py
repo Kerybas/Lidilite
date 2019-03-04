@@ -7,7 +7,7 @@ def draft_create_table(data, table_name='NEW_TABLE', mode='all', primary_keys=No
 
     keys_types = give_keys_types(data, selected_keys)
     keys_sql_types = convert_to_sql_types(keys_types)
-    query = prepare_query(table_name, keys_sql_types)
+    query = prepare_query(table_name, keys_sql_types, primary_keys)
 
     return query
 
@@ -80,14 +80,24 @@ def convert_to_sql_types(keys_types):
     return keys_sql_types
 
 
-def prepare_query(table_name, keys_sql_types):
+def prepare_query(table_name, keys_sql_types, primary_keys=None):
     column_declarations = []
     for key, vtype in keys_sql_types.items():
         str_line = '\t"{}"\t{}'.format(key, vtype)
         column_declarations.append(str_line)
 
+    table_declarations = 'CREATE TABLE "{}" (\n'.format(table_name)
     column_declarations = ',\n'.join(column_declarations)
+    if primary_keys:
 
-    query = 'CREATE TABLE "{}" (\n'.format(table_name) + column_declarations + ');'
+        if not isinstance(primary_keys, list): #if only one key is passed, not in a list
+            primary_keys = [primary_keys]
+
+        primary_keys = ['"{}"'.format(key) for key in primary_keys]
+        primary_keys_declaration = ',\n\tPRIMARY KEY(' + ','.join(primary_keys) + ')'
+    else:
+        primary_keys_declaration = ''
+
+    query = table_declarations + column_declarations + primary_keys_declaration + ');'
 
     return query
