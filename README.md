@@ -17,7 +17,7 @@ You have a `new_data`, including some elements that should replace previously lo
 ```python
 table.replace(new_data)
 ```
-*Note: this require a primary key in your table otherwise it acts like `insert`*  
+*Note: this requires a primary key in your table otherwise it acts like `insert`*  
 
 You don't have a SQLite table yet?  
 You can draft a SQLite query to create the table matching your `data`:
