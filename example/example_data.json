@@ -1,0 +1,4 @@
+[{"id":"A00001","color":"blue", "count":3, "size": 1.6, "content":["stuff1","stuff2"]},
+{"id":"A00002","color":"red", "count":6, "size": 2, "content":[]},
+{"id":"A00003", "count":3, "size": 1.6},
+{"id":"A00004","color":"green", "count":0, "size": 7.4, "content":["stuff1","stuff2","stuff4"]}]
