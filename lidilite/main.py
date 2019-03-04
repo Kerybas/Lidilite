@@ -45,7 +45,7 @@ class Table:
             except KeyError:
                 val = None
 
-            if val != None: # '!= None' needed to differentiate None from [].
+            if val is not None:
                 if column_type == 'INTEGER':
                     val = int(val)
                 elif column_type == 'REAL':

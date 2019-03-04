@@ -90,7 +90,7 @@ def prepare_query(table_name, keys_sql_types, primary_keys=None):
     column_declarations = ',\n'.join(column_declarations)
     if primary_keys:
 
-        if not isinstance(primary_keys, list): #if only one key is passed, not in a list
+        if not isinstance(primary_keys, list):  #if only one key is passed, not in a list
             primary_keys = [primary_keys]
 
         primary_keys = ['"{}"'.format(key) for key in primary_keys]
