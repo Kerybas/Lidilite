@@ -1,5 +1,10 @@
 class Table:
-    """Object representing a sqlite3 table"""
+    """
+        Object representing a sqlite3 table.
+    Args:
+        connexion: a sqlite3.connect() object
+        table: the name of the target table
+    """
     def __init__(self, connexion, table):
         self.cnx = connexion
         self.table = table
@@ -97,16 +102,9 @@ class Table:
                 cursor.execute(sql_query, sql_values)
 
     def insert(self, data_list_dicts):
-        """Shortcut to load in INSERT mode"""
+        """Load list of dicts in INSERT mode"""
         self.load(data_list_dicts, mode='INSERT')
 
     def replace(self, data_list_dicts):
-        """Shortcut to load in REPLACE mode"""
-        self.load(data_list_dicts, mode='REPLACE')
-
-    def insert_or_replace(self, data_list_dicts):
-        """
-        Shortcut to load in REPLACE mode.
-        In Sqlite3 there is no difference between REPLACE and INSERT OR REPLACE.
-        """
+        """Load a list of dicts in REPLACE mode"""
         self.load(data_list_dicts, mode='REPLACE')
