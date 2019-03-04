@@ -36,12 +36,13 @@ print(query)
 ```
 See example.py for a complete demo.  
 
-## Documentations
+## Documentation
 #### `lidilite.Table(connexion, table)`  
 The main object representing the table to be modified.  
 + `connexion`: a sqlite3.connect(database) object  
 + `table`: the name of the target table  
 
+---
 #### `lidilite.Table.insert(data_list_dicts)`
 + `data_list_dicts`: a list of dictionaries to be inserted in the table.  
 
@@ -52,12 +53,14 @@ Value types are controled and forced to int, float or string. Boolean are conver
 it is done by sqlite3 anyway.  
 Empty list or dict are passed as strings `"[]"` or `"{}"`.  
 
+---
 #### `lidilite.Table.replace(data_list_dicts)`
 + `data_list_dicts`: a list of dictionaries to be replaced or inserted in the table.  
 
 If the table does not have a primary key or matching keys are not found in the table, it acts as `insert`.  
 Otherwise, it overwrites the rows with matching keys.  
 
+---
 #### `lidilite.draft_create_table(data_list_dicts, table_name='NEW_TABLE', mode='all', primary_keys=None)`  
 + `data_list_dicts`: a list of dictionaries representing the dataset to be loaded in the table.  
 + `table_name`: the name of your table.  
