@@ -3,7 +3,7 @@
 Lidilite (**Li**st **Di**ct to SQ**Lite**) simplifies the operation of 
 writing lists of dictionaries into a SQLite database.  
 It is particularly handy when you work with json data coming from APIs. You can easily populate your table with `Table.insert` or `Table.replace`.  
-If you just have a dataset and no SQLite table yet, you can draft the SQL `CREATE` query with `draft_create_table`.
+If you are just starting your project and do not have a SQLite table yet, you can use your data to draft the SQL `CREATE` query with `draft_create_table`.
 
 ## Examples
 You have a list of dictionaries `data` that you want to store in `TABLE_1` of `database.db`:  
@@ -17,7 +17,7 @@ You have a `new_data`, including some elements that should replace previously lo
 ```python
 table.replace(new_data)
 ```
-*Note: this require a primary key in your table otherwise it acts like `insert`*  
+*Note: this requires a primary key in your table otherwise it acts like `insert`*  
 
 You don't have a SQLite table yet?  
 You can draft a SQLite query to create the table matching your `data`:
