@@ -1,9 +1,9 @@
 class Table:
     """
-        Object representing a sqlite3 table.
-    Args:
-        connexion: a sqlite3.connect() object
-        table: the name of the target table
+        Main object representing a sqlite3 table.
+
+    :param connexion: a sqlite3.connect() object
+    :param table: (str) the name of the target table
     """
     def __init__(self, connexion, table):
         self.cnx = connexion
@@ -12,12 +12,10 @@ class Table:
 
     def get_columns(self):
         """
-            Get columns' name and type from the sqlite table.
-            return a list of tuples (column_name, type).
-            Example:
-            [('id', 'TEXT'),
-             ('color', 'TEXT'),
-             ('count', 'INTEGER'),]
+            Get columns' name and type from the SQLite table.
+        :returns: (list) a list of tuples (column_name, type).
+                 Example:
+                 [('id', 'TEXT'),('color', 'TEXT'),('count', 'INTEGER'),]
         """
         columns = []
         with self.cnx as cnx:
@@ -28,14 +26,14 @@ class Table:
     def _datarow_to_sqldict(self, data_dict):
         """
             Prepare the content of a dictionary, to be loaded in the table.
-            Select only the keys present in the table and provide empty values for keys
+            Keep only the keys present in the table and provide empty values for keys
             in the table but absent from the dictionary.
             Force the value types to match the table types.
-        Args:
-            data_dict: a dictionary from the data list of dicts.
 
-        Returns:
-            sql_dict: a dictionary matching columns and types of the table.
+         :param data_dict: (dict) a dictionary from the dataset.
+
+        :returns: (dict) a dictionary similar to data_dict with selected keys
+                  and forced types.
 
         """
         sql_dict = {}
@@ -61,15 +59,14 @@ class Table:
     def _build_query(self, sql_dict, mode):
         """
             Build the INSERT or REPLACE query, using the sql_dict to populate the sql_values.
-        Args:
-            sql_dict: dictionary prepared by _datarow_to_sqldict()
-            mode: sqlite3 loading behavior, either 'REPLACE' or 'INSERT'
 
-        Returns:
-            sql_query, sql_values :
-                sql_query is a string like:
-                'REPLACE INTO NEW_TABLE(id,color,count,size,content) VALUES(?,?,?,?,?)'
-                sql_values is a list of values, to be passed through the '?'.
+        :param sql_dict: (dict) dictionary prepared by _datarow_to_sqldict()
+        :param mode: (str) SQLite3 loading behavior, either 'REPLACE' or 'INSERT'
+
+        :returns: sql_query, sql_values :
+                  - sql_query is a string query. Example:
+                    'REPLACE INTO NEW_TABLE(id,color,count,size,content) VALUES(?,?,?,?,?)'
+                  - sql_values is a list of values, to be passed through the '?'.
         """
         columns_names = [column[0] for column in self.columns]
         sql_holders = ','.join('?' * len(sql_dict))
@@ -86,25 +83,25 @@ class Table:
 
         return sql_query, sql_values
 
-    def load(self, data_list_dicts, mode):
+    def load(self, data, mode):
         """
-        Wrap the sql dict creation, query writing and query execution, for any dictionary
-        in a list of dictionaries.
-        Args:
-            data_list_dicts: a list of dictionaries to be loaded in the table.
-            mode: sqlite3 loading behavior, either 'REPLACE' or 'INSERT'
+            Wrap the sql dict creation, query writing and query execution, for any dictionary
+            in a list of dictionaries.
+
+        : param data: (list of dict) a dataset to be loaded in the table.
+        : param mode: (str) SQLite3 loading behavior, either 'REPLACE' or 'INSERT'
         """
         with self.cnx as cnx:
             cursor = cnx.cursor()
-            for data_dict in data_list_dicts:
+            for data_dict in data:
                 sql_dict = self._datarow_to_sqldict(data_dict)
                 sql_query, sql_values = self._build_query(sql_dict, mode)
                 cursor.execute(sql_query, sql_values)
 
-    def insert(self, data_list_dicts):
-        """Load list of dicts in INSERT mode"""
-        self.load(data_list_dicts, mode='INSERT')
+    def insert(self, data):
+        """Load a dataset in INSERT mode"""
+        self.load(data, mode='INSERT')
 
-    def replace(self, data_list_dicts):
-        """Load a list of dicts in REPLACE mode"""
-        self.load(data_list_dicts, mode='REPLACE')
+    def replace(self, data):
+        """Load a dataset of dicts in REPLACE mode"""
+        self.load(data, mode='REPLACE')
