@@ -88,8 +88,8 @@ class Table:
             Wrap the sql dict creation, query writing and query execution, for any dictionary
             in a list of dictionaries.
 
-        : param data: (list of dict) a dataset to be loaded in the table.
-        : param mode: (str) SQLite3 loading behavior, either 'REPLACE' or 'INSERT'
+        :param data: (list of dict) a dataset to be loaded in the table.
+        :param mode: (str) SQLite3 loading behavior, either 'REPLACE' or 'INSERT'
         """
         with self.cnx as cnx:
             cursor = cnx.cursor()
@@ -99,9 +99,15 @@ class Table:
                 cursor.execute(sql_query, sql_values)
 
     def insert(self, data):
-        """Load a dataset in INSERT mode"""
+        """
+            Load a dataset in INSERT mode
+        :param data: (list of dict) a dataset to be loaded in the table.
+        """
         self.load(data, mode='INSERT')
 
     def replace(self, data):
-        """Load a dataset of dicts in REPLACE mode"""
+        """
+            Load a dataset of dicts in REPLACE mode
+        :param data: (list of dict) a dataset to be loaded in the table.
+        """
         self.load(data, mode='REPLACE')
