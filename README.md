@@ -37,38 +37,31 @@ print(query)
 See example.py for a complete demo.  
 
 ## Documentation
-#### `lidilite.Table(connexion, table)`  
-The main object representing the table to be modified.  
-+ `connexion`: a sqlite3.connect(database) object  
-+ `table`: the name of the target table  
 
----
-#### `lidilite.Table.insert(data_list_dicts)`
-+ `data_list_dicts`: a list of dictionaries to be inserted in the table.  
+#### `Table(connexion, table):`
+Main object representing a sqlite3 table.  
+`connexion:` a sqlite3.connect() object  
+`table:` (str) the name of the target table
 
-All dicts do not have to have the same structure. If a key is missing in a dict, a `None` value will
-be passed to the table.  
-If a key exist in a dictionary but not in the table, it will be ignored.  
-Value types are controled and forced to int, float or string. Boolean are converted in in 1 or 0, as 
-it is done by sqlite3 anyway.  
-Empty list or dict are passed as strings `"[]"` or `"{}"`.  
+#### `Table.insert(data):`
+Load a dataset of dicts in INSERT mode  
+`data:` (list of dict) a dataset to be loaded in the table.
 
----
-#### `lidilite.Table.replace(data_list_dicts)`
-+ `data_list_dicts`: a list of dictionaries to be replaced or inserted in the table.  
+#### `Table.replace(data):`
+Load a dataset of dicts in REPLACE mode  
+`data:` (list of dict) a dataset to be loaded in the table.
 
-If the table does not have a primary key or matching keys are not found in the table, it acts as `insert`.  
-Otherwise, it overwrites the rows with matching keys.  
+#### `draft_create_table(data, table_name='NEW_TABLE', mode='all', primary_keys=None):`
+This function takes a dataset (list of dicts) and returns a string representing
+a SQLite `CREATE TABLE` query, matching the dataset structure.  
+`data:` (list of dicts) the dataset you plan to insert in a SQLite table.  
+`param table_name:` (str) the name of your SQLite table  
+`param mode:` (str) either 'all' or 'common'.  
+- **'all':** create a table including all possible columns found in the dataset.
+                    If a key appears at least one time in the list of dicts, it will generate a column.
+- **'common':** create a table including only columns that are found in every dictionary.
+                   If a key appears only in a few dicts, it will not generate a column.
+`param primary_keys:` (str, list, or None) either a single primary key, a list of primary keys, or nothing.
 
----
-#### `lidilite.draft_create_table(data_list_dicts, table_name='NEW_TABLE', mode='all', primary_keys=None)`  
-+ `data_list_dicts`: a list of dictionaries representing the dataset to be loaded in the table.  
-+ `table_name`: the name of your table.  
-+ `mode`: either `all` or `common`.  
-	- `all` is to create a table including all possible columns found in the dataset.
-If a key appears at least one time in the list of dicts, it will generate a column.  
-	- `common` is to create a table including only columns that are found in every dictionary.  
-+ `primary_keys`: A single primary key as a string or a list of primary keys, or nothing.  
-
-It returns a string that you can potential pass to a sqlite3 cursor(), see `examples.py`.  
+`return:` (str) a SQLite CREATE TABLE query, that you can potential pass to a sqlite3 cursor(), see `examples.py`.  
 However, I prefer reviewing the query and passing it manually in [DB Browser for SQLite](https://sqlitebrowser.org/).
