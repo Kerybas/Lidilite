@@ -1,3 +1,6 @@
+import math
+
+
 class Table:
     """
         Main object representing a sqlite3 table.
@@ -5,10 +8,14 @@ class Table:
     :param connexion: a sqlite3.connect() object
     :param table: (str) the name of the target table
     """
+
     def __init__(self, connexion, table):
         self.cnx = connexion
         self.table = table
         self.columns = self.get_columns()
+
+        if not self.columns:
+            raise ValueError("{} doesn't exist.".format(table))
 
     def get_columns(self):
         """
