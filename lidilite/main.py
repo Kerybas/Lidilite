@@ -52,7 +52,10 @@ class Table:
 
             if val is not None:
                 if column_type == 'INTEGER':
-                    val = int(val)
+                    if math.isnan(val):
+                        val = None
+                    else:
+                        val = int(val)
                 elif column_type == 'REAL':
                     val = float(val)
                 elif column_type == 'TEXT':
